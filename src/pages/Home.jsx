@@ -1,24 +1,19 @@
-import { getProductById, getProducts } from "../data/products";
-
-import ProductCard from "../components/ProductCard";
+import Gallery from "../sections/Gallery";
+import heroImage from "../assets/hero.jpg";
 
 export default function Home() {
-  const products = getProducts();
   return (
     <div className="page">
-      <div className="home-hero">
-        <h1 className="home-title">Welcome to ShopHub</h1>
-        <p className="home-subtitle">
-          Discover amazing products at great prices
-        </p>
-      </div>
-      <div className="container">
-        <h2 className="page-title">Our products</h2>
-        <div className="product-grid">
-          {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
+      <div className="hero-card">
+        <img src={heroImage} alt="Home image" className="hero-img" />
+        <div className="hero-overlay">
+          <p className="hero-subtitle">THE NEW SUMMER FLAVOURS ARE HERE!</p>
+          <h1 className="hero-title">Taste The Summer</h1>
+          <button className="btn btn-primary btn-small">SHOP NOW</button>
         </div>
+      </div>
+      <div>
+        <Gallery />
       </div>
     </div>
   );

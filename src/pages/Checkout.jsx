@@ -12,6 +12,7 @@ export default function Checkout() {
   const total = getCartTotal();
 
   function placeOrder() {
+    if (cartItems.length === 0) return;
     alert("Order successful");
     clearCart();
   }
@@ -73,14 +74,15 @@ export default function Checkout() {
               <p className="checkout-total-value">${total.toFixed(2)}</p>
             </div>
             <div className="checkout-total">
-              <p className="checkout-total-lavel">Total:</p>
+              <p className="checkout-total-label">Total:</p>
               <p className="checkout-total-value checkout-total-final">
                 ${total.toFixed(2)}
               </p>
             </div>
             <button
               className="btn btn-primary btn-large btn-block"
-              onClick={() => placeOrder()}
+              onClick={placeOrder}
+              disabled={cartItems.length === 0}
             >
               Place Order
             </button>
