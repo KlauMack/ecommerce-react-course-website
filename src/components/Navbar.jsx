@@ -1,42 +1,59 @@
-import { Link } from "react-router-dom";
+import {
+  IoBagOutline,
+  IoPersonOutline,
+  IoSearchOutline,
+} from "react-icons/io5";
+import { Link, useFetcher } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const controlHeader = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", controlHeader);
+
+    return () => window.removeEventListener("scroll", controlHeader);
+  }, [lastScrollY]);
+
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-brand">
-          ShopHub
+    <header className={`site-header ${isVisible ? "visible" : "hidden"}`}>
+      <div className="site-header-container">
+        <Link to="/" className="header-brand">
+          Yummy.
         </Link>
-        <div className="navbar-links">
-          <Link to="/" className="navbar-link">
-            Home
-          </Link>
-          <Link to="/checkout" className="navbar-link">
-            Cart
-          </Link>
+        <div className="header-links">
+          <Link className="header-link">NEW FLAVOURS</Link>
+          <Link className="header-link">BEST SELLERS</Link>
+          <Link className="header-link">SHOP</Link>
         </div>
-        <div className="navbar-auth">
-          {!user ? (
-            <div className="navbar-auth-links">
-              <Link to="/auth" className="btn btn-secondary">
-                Login
-              </Link>
-              <Link to="/auth" className="btn btn-primary">
-                Signup
-              </Link>
-            </div>
-          ) : (
-            <div className="navbar-user">
-              <span className="navbar-greeting">Hello, {user.email}</span>
-              <button className="btn btn-secondary" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          )}
+        <div className="header-icons">
+          <Link className="header-icon">
+            <IoSearchOutline />
+          </Link>
+          <Link className="header-icon">
+            <IoPersonOutline />
+          </Link>
+          <Link className="header-icon">
+            <IoBagOutline />
+          </Link>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

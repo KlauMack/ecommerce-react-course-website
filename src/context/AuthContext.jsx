@@ -1,69 +1,82 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+
+import { supabase } from "../services/supabase";
 
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(
-    localStorage.getItem("currentUserEmail")
-      ? { email: localStorage.getItem("currentUserEmail") }
-      : null
-  );
+  const [user, setUser] = useState(null);
 
-  function readUsers() {
-    try {
-      const raw = localStorage.getItem("users");
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
 
-  function signUp(email, password) {
-    const users = readUsers();
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user || null);
+    });
 
-    if (users.find((u) => u.email === email)) {
-      return { success: false, error: "Email already exists" };
-    }
-    const newUser = { email, password };
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("currentUserEmail", email);
-    setUser({ email });
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
-    return { success: true };
-  }
+  const signUp = (email, password) => supabase.auth.signUp({ email, password });
 
-  function login(email, password) {
-    const users = readUsers();
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
+  const signIn = (email, password) =>
+    supabase.auth.signInWithPassword({ email, password });
 
-    if (!user) {
-      return { success: false, error: "Invalid email or password" };
-    }
+  const signOut = () => supabase.auth.signOut();
 
-    localStorage.setItem("currentUserEmail", email);
-    setUser({ email });
+  // function readUsers() {
+  //   try {
+  //     const raw = localStorage.getItem("users");
+  //     const parsed = raw ? JSON.parse(raw) : [];
+  //     return Array.isArray(parsed) ? parsed : [];
+  //   } catch {
+  //     return [];
+  //   }
+  // }
 
-    return { success: true };
-  }
+  // function signUp(email, password) {
+  //   const users = readUsers();
 
-  function logout() {
-    localStorage.removeItem("currentUserEmail");
-    setUser(null);
-  }
+  //   if (users.find((u) => u.email === email)) {
+  //     return { success: false, error: "Email already exists" };
+  //   }
+  //   const newUser = { email, password };
+  //   users.push(newUser);
+  //   localStorage.setItem("users", JSON.stringify(users));
+  //   localStorage.setItem("currentUserEmail", email);
+  //   setUser({ email });
+
+  //   return { success: true };
+  // }
+
+  // function login(email, password) {
+  //   const users = readUsers();
+  //   const user = users.find(
+  //     (u) => u.email === email && u.password === password
+  //   );
+
+  //   if (!user) {
+  //     return { success: false, error: "Invalid email or password" };
+  //   }
+
+  //   localStorage.setItem("currentUserEmail", email);
+  //   setUser({ email });
+
+  //   return { success: true };
+  // }
+
+  // function logout() {
+  //   localStorage.removeItem("currentUserEmail");
+  //   setUser(null);
+  // }
 
   return (
-    <AuthContext.Provider value={{ signUp, user, logout, login }}>
+    <AuthContext.Provider value={{ signUp, user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  return context;
-}
+export const useAuth = () => useContext(AuthContext);
