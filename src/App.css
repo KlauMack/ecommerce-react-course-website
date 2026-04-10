@@ -113,7 +113,7 @@ body {
 .page {
   flex: 1;
   padding: 10px;
-  background: #ece9e2;
+  background: #ede9e2;
 }
 
 .container {
@@ -544,12 +544,12 @@ body {
 
 .gallery-section {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   margin: 0 auto;
   gap: 16px;
   padding-top: 20px;
-  height: 450px;
+  padding-bottom: 20px;
 }
 
 .gallery-card {
@@ -561,6 +561,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.5s;
+}
+
+.gallery-card:hover {
+  border-radius: 300px;
+  transition: 0.5s;
 }
 
 .gallery-card-img {
@@ -588,7 +594,126 @@ body {
 .gallery-card-btn:hover {
   background: white;
   border: 2px solid white;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.carousel-section {
+  padding: 30px 0;
+}
+
+.carousel-header {
+  margin-bottom: 24px;
+  padding-left: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carousel-title {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.carousel-nav {
+  display: flex;
+  gap: 10px;
+  padding-right: 20px;
+}
+
+.carousel-btn {
+  padding: 0 8px;
+  border: 1px solid #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+  background: transparent;
+  cursor: pointer;
+}
+
+.carousel-btn:hover {
+  background: black;
+  color: white;
+}
+
+.carousel-btn.disabled,
+.carousel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.carousel-container {
+  width: 100%;
+}
+
+.carousel-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 580px;
+}
+
+.card-header {
+  padding: 6px 6px;
+}
+
+.product-badge {
+  background: #ede9e2;
+  padding: 8px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.product-badge .price {
+  font-family: Inter, sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.image-wrapper {
+  flex: 1;
+  margin: 40px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.image-wrapper img {
+  max-width: 100%;
+  height: auto;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.info h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.info p {
+  font-size: 14px;
+  font-weight: 450;
+  margin-bottom: 12px;
+}
+
+.price {
+  display: flex;
+  justify-content: right;
+  font-weight: 800;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
