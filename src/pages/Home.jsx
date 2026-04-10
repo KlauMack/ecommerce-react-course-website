@@ -1,4 +1,5 @@
 import Gallery from "../sections/Gallery";
+import ProductCarousel from "../sections/Carousel";
 import heroImage from "../assets/hero.jpg";
 
 export default function Home() {
@@ -12,9 +13,8 @@ export default function Home() {
           <button className="btn btn-primary btn-small">SHOP NOW</button>
         </div>
       </div>
-      <div>
-        <Gallery />
-      </div>
+      <Gallery />
+      <ProductCarousel />
     </div>
   );
 }

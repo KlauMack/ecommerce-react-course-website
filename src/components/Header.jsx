@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import { useAuth } from "../context/AuthContext";
 
-export default function Navbar() {
+export default function Header() {
   const { user, logout } = useAuth();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
