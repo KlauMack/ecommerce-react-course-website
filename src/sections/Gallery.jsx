@@ -1,7 +1,7 @@
 import galleryCardImage from "../assets/product.jpg";
 
 export default function Gallery() {
-  const categories = ["News flavours", "Featured", "Best sellers", "Shop now"];
+  const categories = ["New flavours", "Featured", "Best sellers", "Shop now"];
   return (
     <div className="gallery-section">
       {categories.map((category, index) => (

@@ -11,7 +11,7 @@ import productImage from "../assets/bean.webp";
 import { useProducts } from "../hooks/useProducts";
 
 export default function ProductCarousel() {
-  const { data, error, isLoading } = useProducts();
+  const { data = [], error, isLoading } = useProducts();
 
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -21,6 +21,7 @@ export default function ProductCarousel() {
   const [isEnd, setIsEnd] = useState(false);
 
   if (isLoading) return <p>Loading...</p>;
+  if (data.length === 0) return null;
 
   return (
     <div className="carousel-section">
@@ -32,6 +33,7 @@ export default function ProductCarousel() {
             ref={prevRef}
             disabled={isBeginning}
             className={`carousel-btn ${isBeginning ? "disabled" : ""}`}
+            aria-label="Previous products"
           >
             <IoIosArrowBack size={30} />
           </button>
@@ -39,6 +41,7 @@ export default function ProductCarousel() {
             ref={nextRef}
             disabled={isEnd}
             className={`carousel-btn ${isEnd ? "disabled" : ""}`}
+            aria-label="Next products"
           >
             <IoIosArrowForward size={30} />
           </button>
@@ -75,8 +78,8 @@ export default function ProductCarousel() {
           }}
         >
           {data.map((product) => (
-            <SwiperSlide>
-              <div className="carousel-card" key={product.id}>
+            <SwiperSlide key={product.id}>
+              <div className="carousel-card">
                 <div className="card-header">
                   <span className="product-badge">NEW FLAVOUR</span>
                 </div>
